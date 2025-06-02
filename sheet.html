@@ -24,43 +24,60 @@
       }
 
       /* Estilos específicos para la impresión */
+
       @media print {
-        body {
-          /* Reiniciar márgenes para impresión */
-          margin: 0;
-          padding: 0;
-          -webkit-print-color-adjust: exact; /* Para asegurar que los colores de fondo se impriman */
-          color-adjust: exact;
-        }
+    body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
 
-        #letter-size {
-          /* Tamaño de una hoja carta real en pulgadas */
-          width: 8.5in; /* 215.9mm */
-          height: 11in; /* 279.4mm */
-          margin: 0; /* Eliminar márgenes en impresión */
-          padding: 0.5in; /* Puedes ajustar este padding para los márgenes de impresión del contenido */
-          box-sizing: border-box; /* Asegura que el padding no añada al ancho/alto total */
-          font-size: 10px; /* Asegura el tamaño de fuente para impresión */
-          overflow: hidden; /* Evita barras de desplazamiento dentro de la página impresa */
-        }
-        /* Ocultar elementos no deseados en la impresión si los hubiera, por ejemplo: */
-        /* .no-print { display: none; } */
+    /* ESTO ES LO CLAVE: Define los márgenes para TODAS las páginas impresas */
+    @page {
+        margin-top: 0.5in;    /* Margen superior para TODAS las páginas */
+        margin-bottom: 0.5in; /* Puedes definir un margen inferior consistente también */
+        margin-left: 0.5in;   /* Margen izquierdo */
+        margin-right: 0.5in;  /* Margen derecho */
+        size: letter;         /* Asegura el tamaño de la página (carta en este caso) */
+    }
 
-        /* Ajustes adicionales para elementos internos si es necesario */
-        table {
-          page-break-inside: auto; /* Evita que las tablas se corten a la mitad */
-        }
-        tr {
-          page-break-inside: avoid;
-          page-break-after: auto;
-        }
-        thead {
-          display: table-header-group; /* Repite los encabezados de tabla en cada nueva página */
-        }
-        tfoot {
-          display: table-footer-group; /* Repite los pies de tabla en cada nueva página */
-        }
-      }
+    #letter-size {
+        /* Elimina la altura fija y el overflow oculto que impedían las múltiples páginas */
+        /* height: 11in; <-- ELIMINAR O COMENTAR */
+        /* overflow: hidden; <-- ELIMINAR O COMENTAR */
+
+        /* Ahora, #letter-size debe ocupar el 100% del espacio disponible
+           DENTRO de los márgenes definidos por @page.
+           Por lo tanto, quitamos el padding que simulaba los márgenes de página,
+           ya que @page los maneja directamente. */
+        width: 100%; /* Ocupa el 100% del ancho dentro de los márgenes @page */
+        margin: 0;   /* Eliminar márgenes en impresión */
+        padding: 0;  /* Eliminar padding interno, @page ya gestiona los márgenes de la hoja */
+        box-sizing: border-box; /* Es buena práctica mantenerlo */
+        font-size: 10px; /* Asegura el tamaño de fuente para impresión */
+    }
+
+    /* Ocultar elementos no deseados en la impresión si los hubiera, por ejemplo: */
+    /* .no-print { display: none; } */
+
+    /* Ajustes adicionales para elementos internos que ya tenías */
+    table {
+        page-break-inside: auto; /* Permite que las tablas se corten si es necesario para el flujo */
+    }
+    tr {
+        page-break-inside: avoid; /* Evita que las filas individuales se corten a la mitad */
+        page-break-after: auto;
+    }
+    thead {
+        display: table-header-group; /* Repite los encabezados de tabla en cada nueva página */
+    }
+    tfoot {
+        display: table-footer-group; /* Repite los pies de tabla en cada nueva página */
+    }
+
+    /* ... el resto de tus estilos CSS existentes para tablas, th, td, etc. ... */
+}
 
       /* Los estilos que ya tenías para el resto de los elementos (tablas, th, td, etc.) */
       /* ... (tu código CSS existente aquí) ... */
